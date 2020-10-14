@@ -28,13 +28,3 @@ class Tweet(DB.Model):
 
   def __repr__(self):
     return "<Tweet: {}>".format(self.text)
-
-
-# example users but remember they dont have tweets
-def insert_example_users():
-  """ Example users """
-  bill = User(id=1, name="BillGates")
-  elon = User(id=2, name="ElonMusk")
-  DB.session.add(bill)
-  DB.session.add(elon)
-  DB.session.commit()

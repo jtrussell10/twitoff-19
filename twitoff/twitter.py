@@ -26,14 +26,13 @@ def add_or_update_user(username):
 
     tweets = twitter_user.timeline(
       count=200, exclude_replies=True,
-      include_rts=False, tweet_mode='extended'
+      include_rts=False, tweet_mode='extended',
+      since_id=db_user.newest_tweet_id
     )
 
     # will update the most recent tweet id to the user
     if tweets: 
       db_user.newest_tweet_id = tweets[0].id
-
-
     for tweet in tweets:
       vectorized_tweet = vectorize_tweet(tweet.full_text)
       db_tweet = Tweet(
@@ -51,8 +50,13 @@ def add_or_update_user(username):
   else: 
     DB.session.commit()
 
+# a function used to update our users when the update button is clicked
+def update_all_users():
+  """Update all Tweets for all Users in the User Table."""
+  for user in User.query.all():
+    add_or_update_user(user.name)
 
-def insert_example_users():
-  # using our functions to add two users
-  add_or_update_user('elonmusk')
-  add_or_update_user('jackblack')
+# def insert_example_users():
+#   # using our functions to add two users
+#   add_or_update_user('hillaryclinton')
+#   add_or_update_user('jackblack')
